@@ -1,5 +1,7 @@
-import 'package:billing_application/login.dart';
 import 'package:flutter/material.dart';
+import 'login.dart'; // Import your LoginPage file
+import 'auth.dart'; // Import your AuthService file
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -10,23 +12,35 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
 
-  void _register() {
-    // Implement your registration logic here
-    String username = _usernameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
+  Future<void> _register(BuildContext context) async {
+    String username = _usernameController.text.trim();
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
 
-    // You can perform validation and registration logic here
-    // For example, you can send the registration data to an API or save it locally.
-    // Placeholder code for demonstration:
-    print(
-        'Registered: Username - $username, Email - $email, Password - $password');
+    if (email.isNotEmpty && password.isNotEmpty) {
+      UserCredential? userCredential =
+          await _authService.signUp(email, password);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
+      if (userCredential != null) {
+        // Successful registration, handle the navigation or other actions here
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      } else {
+        // Registration failed, show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration failed. Please try again.')),
+        );
+      }
+    } else {
+      // Email or password is empty, show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter email and password.')),
+      );
+    }
   }
 
   @override
@@ -58,7 +72,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
             SizedBox(height: 24),
             ElevatedButton(
-              onPressed: _register,
+              onPressed: () {
+                _register(context);
+              },
               child: Text('Register'),
             ),
           ],

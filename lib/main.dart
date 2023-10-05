@@ -1,9 +1,26 @@
-import 'package:billing_application/billing.dart';
-import 'package:billing_application/registration.dart';
 import 'package:flutter/material.dart';
-import 'login.dart'; // Import your LoginPage file
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+import 'login.dart';
+import 'registration.dart';
+import 'billing.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: 'AIzaSyCWCrDl1YEMzUd71TaRmowqUheh-arjwac',
+      authDomain: 'sawant.dairy',
+      databaseURL:
+          'https://billing-application-90372-default-rtdb.firebaseio.com/',
+      projectId: 'billing-application-90372',
+      storageBucket: 'billing-application-90372.appspot.com',
+      messagingSenderId: '513556508946',
+      appId: '1:513556508946:android:3352768bd7b773686803cb',
+    ),
+  );
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login.dart'; // Import your login page here
 
 void main() => runApp(MyApp());
 
@@ -31,6 +32,14 @@ class _BillingPageState extends State<BillingPage> {
     });
   }
 
+  // Function to handle logout and navigate to login page
+  void _logout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +70,13 @@ class _BillingPageState extends State<BillingPage> {
                 _calculateTotal();
               },
               child: Text('Add Item'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _logout();
+              },
+              child: Text('Sign Out'),
             ),
             SizedBox(height: 20),
             Text(

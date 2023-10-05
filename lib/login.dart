@@ -1,19 +1,44 @@
 import 'package:flutter/material.dart';
 import 'billing.dart'; // Import your BillingPage file
+import 'auth.dart'; // Import your AuthService file
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
 
-  void _login(BuildContext context) {
-    // Your authentication logic goes here
+  Future<void> _login(BuildContext context) async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
 
-    // For demonstration purposes, assuming authentication is successful
-    // Navigate to BillingPage after successful login
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => BillingPage()),
-    );
+    if (email.isNotEmpty && password.isNotEmpty) {
+      UserCredential? userCredential =
+          await _authService.signIn(email, password);
+
+      if (userCredential != null) {
+        // Successful login, handle the navigation or other actions here
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BillingPage()),
+        );
+      } else {
+        // Login failed, show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invalid credentials. Please try again.')),
+        );
+      }
+    } else {
+      // Email or password is empty, show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter email and password.')),
+      );
+    }
   }
 
   @override
@@ -45,8 +70,9 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () =>
-                  _login(context), // Pass the context to the _login function
+              onPressed: () {
+                _login(context);
+              },
               child: Text('Login'),
             ),
           ],

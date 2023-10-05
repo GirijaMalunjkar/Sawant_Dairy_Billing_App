@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "513556508946",
+    "project_id": "billing-application-90372",
+    "storage_bucket": "billing-application-90372.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513556508946:android:3352768bd7b773686803cb",
+        "android_client_info": {
+          "package_name": "sawant.dairy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWCrDl1YEMzUd71TaRmowqUheh-arjwac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
